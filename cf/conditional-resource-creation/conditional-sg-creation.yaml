@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation stack to test conditional resource creation.
+Parameters:
+  Environment: 
+    Default: PROD
+    Type: String
+    AllowedValues: 
+      - PROD
+      - TEST
+    ConstraintDescription: Must specify PROD or TEST.
+
+Mappings: {}
+
+Conditions:
+  CreateProdResources: !Equals [ !Ref Environment, PROD ]
+  CreateTestResources: !Equals [ !Ref Environment, TEST ]
+
+Resources:
+  TestSecurityGroupProd:
+    Condition: CreateProdResources
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Prod SG
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: '10.0.1.0/24'
+
+  TestSecurityGroupTest:
+    Condition: CreateTestResources
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Test Sg
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: '10.0.2.0/24'
+
+  TestSecurityGroupMain:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Conditional security group
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        SourceSecurityGroupId: !If [  CreateProdResources, !Ref TestSecurityGroupProd,  !Ref TestSecurityGroupTest ]
