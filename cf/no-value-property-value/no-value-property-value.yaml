@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Security group with AWS::NoValue for CidrIp property.
+Parameters: {}
+Mappings: {}
+
+
+Resources:
+  TestSecurityGroup1:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group with AWS::NoValue for CidrIp Property
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: '0.0.0.0/0'
+      - IpProtocol: tcp
+        FromPort: '8080'
+        ToPort: '8080'
+        CidrIp: !Ref 'AWS::NoValue'  # NoValue effectively removes this rule.
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '8080'
+        CidrIp: !Ref 'AWS::NoValue'  # NoValue effectively removes this rule.
+
+        #  Ec2Instance:
+        #    Type: AWS::EC2::Instance
+        #    Properties:
+        #      ImageId: ami-1e91817d
+        #      InstanceType: t2.nano
+        #      SecurityGroupIds:
+        #        - !Ref TestSecurityGroup1
