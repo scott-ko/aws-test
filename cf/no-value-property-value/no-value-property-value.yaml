@@ -34,12 +34,5 @@ Resources:
         ToPort: '80'
         CidrIp: !If [ HasCidr2, !Ref Cidr2, 'AWS::NoValue' ]
 
-# Single NoValue invalidates all ingress rules. NoValue acts like null.
+# Conclusion -Single NoValue invalidates all ingress rules. NoValue acts like null.
 
-        #  Ec2Instance:
-        #    Type: AWS::EC2::Instance
-        #    Properties:
-        #      ImageId: ami-1e91817d
-        #      InstanceType: t2.nano
-        #      SecurityGroupIds:
-        #        - !Ref TestSecurityGroup1
