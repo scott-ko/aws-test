@@ -1,7 +1,18 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Security group with AWS::NoValue for CidrIp property.
-Parameters: {}
+Parameters:
+  Cidr1:
+    Default: ''
+    Type: String 
+  Cidr2:
+    Default: ''
+    Type: String 
+
 Mappings: {}
+
+Conditions:
+  HasCidr1: !Not [ !Equals [ !Ref Cidr1, '' ] ]
+  HasCidr2: !Not [ !Equals [ !Ref Cidr2, '' ] ]
 
 
 Resources:
@@ -15,13 +26,15 @@ Resources:
         ToPort: '22'
         CidrIp: '0.0.0.0/0'
       - IpProtocol: tcp
-        FromPort: '8080'
-        ToPort: '8080'
-        CidrIp: !Ref 'AWS::NoValue'  # NoValue effectively removes this rule.
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: !If [ HasCidr1, !Ref Cidr1, 'AWS::NoValue' ]
       - IpProtocol: tcp
         FromPort: '80'
-        ToPort: '8080'
-        CidrIp: !Ref 'AWS::NoValue'  # NoValue effectively removes this rule.
+        ToPort: '80'
+        CidrIp: !If [ HasCidr2, !Ref Cidr2, 'AWS::NoValue' ]
+
+# Single NoValue invalidates all ingress rules. NoValue acts like null.
 
         #  Ec2Instance:
         #    Type: AWS::EC2::Instance
