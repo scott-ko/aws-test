@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation stack to test conditional resource creation.
+Parameters:
+  Cidr1: 
+    Type: String
+
+  Cidr2: 
+    Type: String
+    Default: ''
+
+Mappings: {}
+
+Conditions:
+  CreateSecondResource:  !Not [ !Equals [ !Ref Cidr2, '' ] ]
+
+Resources:
+  TestSecurityGroup1:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group created always.
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: !Ref Cidr1
+
+  TestSecurityGroup2:
+    Condition: CreateSecondResource
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group created only when Cidr2 is provided
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: !Ref Cidr2
+
