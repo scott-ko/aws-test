@@ -4,6 +4,9 @@ Parameters:
   Cidr1:
     Default: '0.0.0.0/32'
     Type: String 
+  Cidr2:
+    Default: '0.0.0.0/32'
+    Type: String 
 
 Mappings: {}
 
@@ -22,6 +25,10 @@ Resources:
         FromPort: '80'
         ToPort: '80'
         CidrIp: !Ref Cidr1
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: !Ref Cidr2
 
   Ec2Instance:
     Type: AWS::EC2::Instance
