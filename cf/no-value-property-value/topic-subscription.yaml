@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Security group with AWS::NoValue for CidrIp property.
+Parameters:
+  Param1:
+    Default: AWS::NoValue
+    Type: String 
+
+
+Conditions:
+  HasParam1: !Not [ !Equals [ !Ref Param1, '' ] ]
+
+Resources:
+  MoaFttOftNotificationTopic:
+    Type: "AWS::SNS::Topic"
+    Properties:
+      TopicName: !Sub TestSnsTopic
+      Subscription:
+        - Endpoint: !Ref Param1
+          Protocol: "email"
+
+
