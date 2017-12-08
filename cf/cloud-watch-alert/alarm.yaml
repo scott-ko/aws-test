@@ -52,3 +52,39 @@ Resources:
       Unit: None
       TreatMissingData: ignore
 
+  Alarm3:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      ActionsEnabled: true
+      AlarmDescription: Period 60 EvaluationPeriods 3
+      AlarmName: P60EP3Bad
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 3
+      AlarmActions:
+        - !Ref Topic
+      MetricName: LastResult
+      Namespace: !Sub Dev/Test1
+      Period: 60
+      Statistic: SampleCount
+      Threshold: 1
+      Unit: None
+      TreatMissingData: breaching
+
+  Alarm4:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      ActionsEnabled: true
+      AlarmDescription: Period 180 EvaluationPeriods 1
+      AlarmName: P180EP1Bad
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 1
+      AlarmActions:
+        - !Ref Topic
+      MetricName: LastResult
+      Namespace: !Sub Dev/Test1
+      Period: 180
+      Statistic: SampleCount
+      Threshold: 1
+      Unit: None
+      TreatMissingData: breaching
+
