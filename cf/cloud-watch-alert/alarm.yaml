@@ -20,50 +20,60 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Properties:
       ActionsEnabled: true
-      AlarmDescription: Period 60 EvaluationPeriods 3
+      AlarmDescription: Period 60 EvaluationPeriods 2
       AlarmName: P60EP3
       ComparisonOperator: LessThanThreshold
-      EvaluationPeriods: 3
+      EvaluationPeriods: 2
       AlarmActions:
         - !Ref Topic
       MetricName: LastResult
-      Namespace: !Sub Dev/Test1
+      Namespace: Test1
+      Dimensions: 
+        - Name: Env
+          Value: dev
       Period: 60
       Statistic: SampleCount
       Threshold: 1
       Unit: None
-      TreatMissingData: ignore
+      TreatMissingData: ignore # bad choice for SampleCount
 
   Alarm2:
     Type: AWS::CloudWatch::Alarm
     Properties:
       ActionsEnabled: true
-      AlarmDescription: Period 180 EvaluationPeriods 1
-      AlarmName: P180EP1
+      AlarmDescription: Period 120 EvaluationPeriods 1
+      AlarmName: P120EP1
       ComparisonOperator: LessThanThreshold
       EvaluationPeriods: 1
       AlarmActions:
         - !Ref Topic
       MetricName: LastResult
-      Namespace: !Sub Dev/Test1
-      Period: 180
+      Namespace: Test1
+      Dimensions: 
+      Dimensions: 
+        - Name: Env
+          Value: dev
+      Period: 120
       Statistic: SampleCount
       Threshold: 1
       Unit: None
-      TreatMissingData: ignore
+      TreatMissingData: ignore #bad choice for SampleCount
 
   Alarm3:
     Type: AWS::CloudWatch::Alarm
     Properties:
       ActionsEnabled: true
-      AlarmDescription: Period 60 EvaluationPeriods 3
+      AlarmDescription: Period 60 EvaluationPeriods 2
       AlarmName: P60EP3Bad
       ComparisonOperator: LessThanThreshold
-      EvaluationPeriods: 3
+      EvaluationPeriods: 2
       AlarmActions:
         - !Ref Topic
       MetricName: LastResult
-      Namespace: !Sub Dev/Test1
+      Namespace: Test1
+      Dimensions: 
+        - Name: Env
+          Value: dev
       Period: 60
       Statistic: SampleCount
       Threshold: 1
@@ -74,17 +84,61 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Properties:
       ActionsEnabled: true
-      AlarmDescription: Period 180 EvaluationPeriods 1
-      AlarmName: P180EP1Bad
+      AlarmDescription: Period 120 EvaluationPeriods 1
+      AlarmName: P120EP1Bad
       ComparisonOperator: LessThanThreshold
       EvaluationPeriods: 1
       AlarmActions:
         - !Ref Topic
       MetricName: LastResult
-      Namespace: !Sub Dev/Test1
-      Period: 180
+      Namespace: Test1
+      Dimensions: 
+        - Name: Env
+          Value: dev
+      Period: 120
       Statistic: SampleCount
       Threshold: 1
       Unit: None
       TreatMissingData: breaching
 
+  Alarm5:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      ActionsEnabled: true
+      AlarmDescription: Period 60 EvaluationPeriods 1
+      AlarmName: P60EP1
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 1
+      AlarmActions:
+        - !Ref Topic
+      MetricName: LastResult
+      Namespace: Test1
+      Dimensions: 
+        - Name: Env
+          Value: dev
+      Period: 60
+      Statistic: SampleCount
+      Threshold: 1
+      Unit: None
+      TreatMissingData: breaching
+
+  Alarm5:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      ActionsEnabled: true
+      AlarmDescription: Period 60 EvaluationPeriods 1
+      AlarmName: P60EP1
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 1
+      AlarmActions:
+        - !Ref Topic
+      MetricName: LastResult
+      Namespace: Test1
+      Dimensions: 
+        - Name: Env
+          Value: dev
+      Period: 60
+      Statistic: SampleCount
+      Threshold: 1
+      Unit: None
+      TreatMissingData: breaching
