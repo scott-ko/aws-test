@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Test alarm configuration
+Parameters:
+    SNSAlertEmail:
+        Description: Email address alarms are sent to
+        Type: String
+
+Mappings: {}
+
+Resources:
+  Topic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: SNS Topic for monitoring FTT Batch job
+      Subscription:
+        - Endpoint: !Ref SNSAlertEmail
+          Protocol: email
+
+  Alarm1:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      ActionsEnabled: true
+      AlarmDescription: Period 60 EvaluationPeriods 3
+      AlarmName: P60EP3
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 3
+      AlarmActions:
+        - !Ref Topic
+      MetricName: PeriodTest
+      Namespace: !Sub Dev/Test1
+      Period: 60
+      Statistic: SampleCount
+      Threshold: 1
+      Unit: None
+
+  Alarm2:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      ActionsEnabled: true
+      AlarmDescription: Check if MOA FTT batch job returned non 0
+      AlarmName: P180EP1
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 1
+      AlarmActions:
+        - !Ref Topic
+      MetricName: PeriodTest
+      Namespace: !Sub Dev/Test1
+      Period: 180
+      Statistic: SampleCount
+      Threshold: 1
+      Unit: None
+
