@@ -26,12 +26,13 @@ Resources:
       EvaluationPeriods: 3
       AlarmActions:
         - !Ref Topic
-      MetricName: PeriodTest
+      MetricName: LastResult
       Namespace: !Sub Dev/Test1
       Period: 60
       Statistic: SampleCount
       Threshold: 1
       Unit: None
+      TreatMissingData: ignore
 
   Alarm2:
     Type: AWS::CloudWatch::Alarm
@@ -43,10 +44,11 @@ Resources:
       EvaluationPeriods: 1
       AlarmActions:
         - !Ref Topic
-      MetricName: PeriodTest
+      MetricName: LastResult
       Namespace: !Sub Dev/Test1
       Period: 180
       Statistic: SampleCount
       Threshold: 1
       Unit: None
+      TreatMissingData: ignore
 
