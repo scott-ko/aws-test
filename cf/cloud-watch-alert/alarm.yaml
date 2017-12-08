@@ -37,7 +37,7 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Properties:
       ActionsEnabled: true
-      AlarmDescription: Check if MOA FTT batch job returned non 0
+      AlarmDescription: Period 180 EvaluationPeriods 1
       AlarmName: P180EP1
       ComparisonOperator: LessThanThreshold
       EvaluationPeriods: 1
