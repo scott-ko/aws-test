@@ -20,6 +20,7 @@ Resources:
     Condition: CreateProdResources
     Type: AWS::EC2::SecurityGroup
     Properties:
+      GroupName: ConditionalSG
       GroupDescription: Prod SG
       SecurityGroupIngress:
       - IpProtocol: tcp
@@ -31,6 +32,7 @@ Resources:
     Condition: CreateTestResources
     Type: AWS::EC2::SecurityGroup
     Properties:
+      GroupName: ConditionalSG    # Note duplicated name is allowed.
       GroupDescription: Test Sg
       SecurityGroupIngress:
       - IpProtocol: tcp

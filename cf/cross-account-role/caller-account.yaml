@@ -1,0 +1,88 @@
+Parameters:
+  RemoteRoleARN:
+    Type: String
+  SshCidr:
+    Type: String
+Resources:
+  CallerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: CallerRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+  CallerRolePolicies:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Sid: CrossAccountAssumeRolePermissions
+          Action:
+            - sts:AssumeRole
+          Effect: Allow
+          Resource:
+            - !Ref RemoteRoleARN
+
+  Role1:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: CallerRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+  Role1Policies:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Action:
+            - ec2:describe*
+          Effect: Allow
+          Resource:
+            - '*'
+
+  InstanceProfile1:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref CallerRole
+        - !Ref Role1
+      InstanceProfileName: InstanceProfile1
+  
+  Instance1:
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      IamInstanceProfile: !Ref InstanceProfile1
+      ImageId: String
+      SecurityGroups: 
+        - !Ref InstanceSecurityGroup
+      Tags: 
+        - Name: Instance Profile Test Instance
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: !Ref SshCidr
+
+Outputs:
+  IpAddress: 
+    Value: !GetAtt Instance1.PublicIp
+

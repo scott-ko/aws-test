@@ -1,0 +1,29 @@
+Parameters:
+  RemoteCallerRoleARN:
+    Type: String
+Resources:
+  WhoAmIRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: WhoAmIRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Ref RemoteCallerRoleARN
+            Action:
+              - sts:AssumeRole
+      Path: /
+
+  WhoAmIRolePolicies:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: BambooBuildPolicy
+      PolicyDocument:
+        Statement:
+        - Action:
+          - sts.getcalleridentity
+          Effect: Allow
+          Resource:
+          - '*'
+Outputs: {}
