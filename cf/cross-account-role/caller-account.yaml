@@ -20,6 +20,7 @@ Resources:
   CallerRolePolicies:
     Type: AWS::IAM::Policy
     Properties:
+      PolicyName: CallerRolePolicy
       PolicyDocument:
         Statement:
         - Sid: CrossAccountAssumeRolePermissions
@@ -28,11 +29,13 @@ Resources:
           Effect: Allow
           Resource:
             - !Ref RemoteRoleARN
+      Roles:
+        - !Ref CallerRole
 
   Role1:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: CallerRole
+      RoleName: Role1
       AssumeRolePolicyDocument:
         Statement:
           - Effect: Allow
@@ -42,9 +45,11 @@ Resources:
             Action:
               - sts:AssumeRole
       Path: /
+
   Role1Policies:
     Type: AWS::IAM::Policy
     Properties:
+      PolicyName: Role1Policy
       PolicyDocument:
         Statement:
         - Action:
@@ -52,6 +57,8 @@ Resources:
           Effect: Allow
           Resource:
             - '*'
+      Roles:
+        - !Ref Role1
 
   InstanceProfile1:
     Type: AWS::IAM::InstanceProfile
@@ -59,18 +66,21 @@ Resources:
       Path: /
       Roles:
         - !Ref CallerRole
-        - !Ref Role1
+#        - !Ref Role1
       InstanceProfileName: InstanceProfile1
   
   Instance1:
-    Type: "AWS::EC2::Instance"
+    Type: AWS::EC2::Instance
     Properties: 
       IamInstanceProfile: !Ref InstanceProfile1
-      ImageId: String
+      ImageId: ami-ff4ea59d
+      KeyName: 2013-04
+      InstanceType: t2.nano
       SecurityGroups: 
         - !Ref InstanceSecurityGroup
       Tags: 
-        - Name: Instance Profile Test Instance
+        - Key: Name
+          Value: Instance Profile Test Instance
 
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup

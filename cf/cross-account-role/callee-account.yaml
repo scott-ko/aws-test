@@ -22,8 +22,10 @@ Resources:
       PolicyDocument:
         Statement:
         - Action:
-          - sts.getcalleridentity
+          - sts:getcalleridentity
           Effect: Allow
           Resource:
           - '*'
+      Roles:
+        - !Ref WhoAmIRole
 Outputs: {}
